@@ -478,9 +478,9 @@
             <h3><i class="fas fa-envelope"></i> Stay Updated</h3>
             <p>Enter your email below to get notified when we launch. Be the first to experience our revolutionary AI technology.</p>
             
-            <form id="emailForm">
+            <form action="https://formspree.io/f/xgvljowa" method="POST" id="emailForm">
                 <div class="form-group">
-                    <input type="email" id="email" placeholder="Your email address" required>
+                    <input type="email" name="email" id="email" placeholder="Your email address" required>
                     <button type="submit">Subscribe <i class="fas fa-paper-plane"></i></button>
                 </div>
                 <div class="privacy-note">
@@ -507,54 +507,26 @@
         // Create AI particles
         const particlesContainer = document.getElementById('particles');
         const particleCount = 30;
-        
         for (let i = 0; i < particleCount; i++) {
             const particle = document.createElement('div');
             particle.classList.add('particle');
-            
             const size = Math.random() * 4 + 2;
             particle.style.width = `${size}px`;
             particle.style.height = `${size}px`;
-            
-            // Position particles in a ring around the black hole
             const angle = Math.random() * Math.PI * 2;
             const distance = Math.random() * 120 + 60;
             const x = 160 + Math.cos(angle) * distance;
             const y = 160 + Math.sin(angle) * distance;
-            
             particle.style.left = `${x}px`;
             particle.style.top = `${y}px`;
-            
-            // Animation
             const duration = Math.random() * 5 + 3;
             const delay = Math.random() * 2;
-            
             particle.style.animation = `
                 pulse ${duration}s infinite ${delay}s,
                 float ${duration * 2}s infinite ${delay}s`;
-            
             particlesContainer.appendChild(particle);
         }
-        
-        // Form submission handling
-        document.getElementById('emailForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('email').value;
-            const recipient = 'ethanowicks9@gmail.com';
-            const subject = 'New Subscription from Black Hole AI';
-            const body = `A new user has subscribed to Black Hole AI:\n\nEmail: ${email}\n\nTimestamp: ${new Date().toLocaleString()}`;
-            
-            // In a real implementation, you would send this data to a server
-            // For demonstration, we'll show a confirmation message
-            alert(`Thank you for subscribing! We'll send updates to ${email}`);
-            
-            // This would be the actual mailto link in a real implementation:
-            // window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            
-            // Reset form
-            document.getElementById('emailForm').reset();
-        });
+        // Remove custom JS form handler for Formspree
     </script>
 </body>
 </html>
