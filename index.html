@@ -5,17 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BLACK HOLE AI | Coming Soon</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --border-subtle: #30363d;
+            --border-muted: #21262d;
+            --text-primary: #f0f6fc;
+            --text-secondary: #8b949e;
+            --text-muted: #656d76;
+            --accent-primary: #238636;
+            --accent-secondary: #7c3aed;
+            --accent-tertiary: #0969da;
+            --surface-overlay: rgba(13, 17, 23, 0.8);
+            --shadow-lg: 0 16px 32px rgba(1, 4, 9, 0.85);
+            --shadow-xl: 0 25px 50px rgba(1, 4, 9, 0.85);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #0c0c1e 0%, #1a1a2e 100%);
-            color: #e0e0ff;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -23,89 +43,100 @@
             align-items: center;
             overflow-x: hidden;
             position: relative;
+            line-height: 1.6;
         }
         
-        .cyber-grid {
+        .grid-background {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background-image: 
-                linear-gradient(rgba(20, 20, 60, 0.7) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(20, 20, 60, 0.7) 1px, transparent 1px);
-            background-size: 30px 30px;
+                linear-gradient(var(--border-subtle) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px);
+            background-size: 48px 48px;
             z-index: -2;
             opacity: 0.3;
         }
         
-        .cyber-glow {
+        .gradient-orb {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(100, 80, 255, 0.2) 0%, rgba(0, 0, 0, 0) 70%);
-            z-index: -1;
+            top: 20%;
+            right: 10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, transparent 70%);
             border-radius: 50%;
+            z-index: -1;
+            animation: float 6s infinite ease-in-out;
+        }
+        
+        .gradient-orb-2 {
+            position: fixed;
+            bottom: 20%;
+            left: 10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(35, 134, 54, 0.12) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: -1;
+            animation: float 8s infinite ease-in-out reverse;
         }
         
         .container {
             max-width: 1200px;
             width: 90%;
-            padding: 2rem;
+            padding: 3rem 2rem;
             text-align: center;
             z-index: 1;
         }
         
-        .ai-badge {
+        .status-badge {
             display: inline-flex;
             align-items: center;
-            background: linear-gradient(90deg, #6e45e2, #88d3ce);
-            color: white;
-            padding: 0.5rem 1.2rem;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 0 15px rgba(110, 69, 226, 0.5);
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
         }
         
-        .ai-badge i {
-            margin-right: 0.5rem;
+        .status-badge:hover {
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
         }
         
-        .coming-soon {
-            font-size: 2.8rem;
-            letter-spacing: 10px;
-            font-weight: 300;
-            text-transform: uppercase;
-            color: #ffffff;
-            text-shadow: 0 0 10px rgba(135, 105, 255, 0.8);
+        .status-badge i {
+            margin-right: 0.75rem;
+            color: var(--accent-primary);
         }
         
-        .black-hole-text {
-            font-size: 5rem;
-            letter-spacing: 15px;
+        .hero-title {
+            font-size: clamp(2.5rem, 8vw, 6rem);
             font-weight: 800;
-            text-transform: uppercase;
-            background: linear-gradient(45deg, #8a2be2, #5d9afe, #00c6ff);
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            position: relative;
-            display: inline-block;
         }
         
-        .black-hole-text::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, #8a2be2, #5d9afe, #00c6ff);
-            border-radius: 3px;
+        .hero-subtitle {
+            font-size: clamp(1.125rem, 3vw, 1.5rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 400;
         }
         
         .ai-container {
@@ -216,76 +247,110 @@
             font-size: 1.2rem;
         }
         
-        .newsletter {
-            background: rgba(20, 20, 40, 0.6);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(100, 80, 255, 0.3);
-            border-radius: 15px;
-            padding: 2.5rem;
+        .newsletter-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 3rem;
             max-width: 600px;
-            margin: 2rem auto;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin: 4rem auto 2rem;
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
         }
         
-        .newsletter h3 {
+        .newsletter-card:hover {
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .newsletter-title {
             font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: #88d3ce;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
             display: flex;
             align-items: center;
             justify-content: center;
         }
         
-        .newsletter h3 i {
-            margin-right: 0.8rem;
-            color: #6e45e2;
+        .newsletter-title i {
+            margin-right: 0.75rem;
+            color: var(--accent-primary);
         }
         
-        .newsletter p {
-            margin-bottom: 1.5rem;
+        .newsletter-description {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
             line-height: 1.6;
-            color: #c5c5ff;
+        }
+        
+        .form-container {
+            position: relative;
         }
         
         .form-group {
             display: flex;
+            gap: 0;
             margin-bottom: 1rem;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group:focus-within {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(35, 134, 54, 0.1);
         }
         
         .form-group input {
             flex: 1;
             padding: 1rem 1.5rem;
             border: none;
-            background: rgba(10, 10, 30, 0.7);
-            border-radius: 50px 0 0 50px;
-            color: white;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
             font-size: 1rem;
             outline: none;
-            border: 1px solid rgba(100, 80, 255, 0.5);
-            border-right: none;
+            font-family: inherit;
+        }
+        
+        .form-group input::placeholder {
+            color: var(--text-muted);
         }
         
         .form-group button {
             padding: 1rem 2rem;
-            background: linear-gradient(90deg, #6e45e2, #88d3ce);
+            background: var(--accent-primary);
             color: white;
             border: none;
-            border-radius: 0 50px 50px 0;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
             font-size: 1rem;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
         
         .form-group button:hover {
-            background: linear-gradient(90deg, #88d3ce, #6e45e2);
-            box-shadow: 0 0 15px rgba(110, 69, 226, 0.5);
+            background: #2ea043;
+            transform: translateY(-1px);
+        }
+        
+        .form-group button:active {
+            transform: translateY(0);
         }
         
         .privacy-note {
-            font-size: 0.85rem;
-            color: #8888cc;
+            font-size: 0.875rem;
+            color: var(--text-muted);
             margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
         
         .social-links {
@@ -316,217 +381,243 @@
             box-shadow: 0 5px 15px rgba(110, 69, 226, 0.4);
         }
         
-        .copyright {
-            margin-top: 2rem;
-            color: #7777aa;
-            font-size: 0.9rem;
+        .footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 4rem 0;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .feature-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-4px);
+        }
+        
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(35, 134, 54, 0.1);
+            color: var(--accent-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .feature-description {
+            color: var(--text-secondary);
+            font-size: 0.925rem;
+            line-height: 1.5;
         }
         
         /* Animations */
         @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
         }
         
-        @keyframes pulse {
-            0%, 100% { opacity: 0.2; }
-            50% { opacity: 1; }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-fade-in {
+            animation: fadeInUp 0.8s ease-out forwards;
         }
         
         /* Responsive design */
-        @media (max-width: 968px) {
-            .coming-soon {
-                font-size: 2.2rem;
-                letter-spacing: 8px;
-            }
-            
-            .black-hole-text {
-                font-size: 3.5rem;
-                letter-spacing: 12px;
-            }
-            
-            .ai-container {
-                gap: 2rem;
-            }
-        }
-        
         @media (max-width: 768px) {
-            .coming-soon {
-                font-size: 1.8rem;
-                letter-spacing: 6px;
+            .container {
+                padding: 2rem 1rem;
             }
             
-            .black-hole-text {
-                font-size: 2.8rem;
-                letter-spacing: 8px;
-            }
-            
-            .black-hole {
-                width: 250px;
-                height: 250px;
-            }
-            
-            .black-hole-core {
-                width: 100px;
-                height: 100px;
-            }
-            
-            .accretion-disk {
-                width: 240px;
-                height: 70px;
+            .newsletter-card {
+                padding: 2rem;
+                margin: 3rem auto 2rem;
             }
             
             .form-group {
                 flex-direction: column;
+                border-radius: 12px;
             }
             
             .form-group input {
-                border-radius: 50px;
-                border-right: 1px solid rgba(100, 80, 255, 0.5);
-                margin-bottom: 1rem;
+                border-radius: 12px 12px 0 0;
+                border-bottom: none;
             }
             
             .form-group button {
-                border-radius: 50px;
+                border-radius: 0 0 12px 12px;
+                border-top: 1px solid var(--border-subtle);
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                margin: 2rem 0;
+            }
+            
+            .feature-card {
+                padding: 1.5rem;
             }
         }
         
         @media (max-width: 480px) {
-            .coming-soon {
-                font-size: 1.4rem;
-                letter-spacing: 4px;
-            }
-            
-            .black-hole-text {
-                font-size: 2rem;
-                letter-spacing: 6px;
-            }
-            
-            .black-hole {
-                width: 200px;
-                height: 200px;
-            }
-            
-            .black-hole-core {
-                width: 80px;
-                height: 80px;
-            }
-            
-            .accretion-disk {
-                width: 190px;
-                height: 60px;
-            }
-            
-            .newsletter {
+            .newsletter-card {
                 padding: 1.5rem;
+            }
+            
+            .status-badge {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="cyber-grid"></div>
-    <div class="cyber-glow"></div>
+    <div class="grid-background"></div>
+    <div class="gradient-orb"></div>
+    <div class="gradient-orb-2"></div>
     
     <div class="container">
-        <!-- <div class="ai-badge">
-            <i class="fas fa-robot"></i>
-            <span>POWERED BY AI</span>
-        </div> -->
-        
-        <div class="coming-soon">C O M I N G  S O O N</div>
-        
-        <h1 class="black-hole-text">B L A C K H O L E</h1>
-        
-        <div class="ai-container">
-            <!-- <div class="black-hole">
-                <div class="black-hole-core"></div>
-                <div class="accretion-disk"></div>
-                <div class="ai-particles" id="particles"></div>
-            </div> -->
-<!--             
-            <div class="ai-features">
-                <h3><i class="fas fa-brain"></i> AI-Powered Technology</h3>
-                
-                <div class="feature">
-                    <i class="fas fa-microchip"></i>
-                    <div>
-                        <h4>Neural Processing</h4>
-                        <p>Advanced AI algorithms for data analysis and pattern recognition</p>
-                    </div>
-                </div>
-                
-                <div class="feature">
-                    <i class="fas fa-bolt"></i>
-                    <div>
-                        <h4>Quantum Computing</h4>
-                        <p>Leveraging quantum mechanics for unprecedented processing power</p>
-                    </div>
-                </div>
-                
-                <div class="feature">
-                    <i class="fas fa-shield-alt"></i>
-                    <div>
-                        <h4>Secure by Design</h4>
-                        <p>Blockchain-enhanced security protecting all data transactions</p>
-                    </div>
-                </div>
-            </div>
+        <div class="status-badge">
+            <i class="fas fa-code"></i>
+            <span>LAUNCHING SOON</span>
         </div>
-         -->
-        <div class="container">
- <div class="newsletter">
-            <h3><i class="fas fa-envelope"></i> Stay Updated</h3>
-            <p>Enter your email below to get notified when we launch. Be the first to experience our revolutionary AI technology.</p>
+        
+        <h1 class="hero-title">BLACK HOLE AI</h1>
+        <p class="hero-subtitle">Revolutionary AI-powered design tools for the next generation of creators</p>
+
+        <div class="newsletter-card">
+            <h3 class="newsletter-title">
+                <i class="fas fa-envelope"></i> 
+                Get Early Access
+            </h3>
+            <p class="newsletter-description">
+                Join our waitlist to be the first to experience the future of AI-powered design tools. 
+                We'll notify you as soon as we launch.
+            </p>
             
             <form action="https://formspree.io/f/xgvljowa" method="POST" id="emailForm">
-                <div class="form-group">
-                    <input type="email" name="email" id="email" placeholder="Your email address" required>
-                    <button type="submit">Subscribe <i class="fas fa-paper-plane"></i></button>
+                <div class="form-container">
+                    <div class="form-group">
+                        <input type="email" name="email" id="email" placeholder="Enter your email address" required>
+                        <button type="submit">
+                            Join Waitlist
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="privacy-note">
-                    <i class="fas fa-lock"></i> Your email is safe with us. We never share your data with third parties.
+                    <i class="fas fa-shield-alt"></i>
+                    We respect your privacy. Unsubscribe at any time.
                 </div>
             </form>
         </div>
-        
-        <!-- <div class="social-links">
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-            <a href="#"><i class="fab fa-github"></i></a>
-            <a href="#"><i class="fab fa-discord"></i></a>
-        </div> -->
-        
-        <div class="copyright">
-            &copy; 2025 BLACK HOLE AI. All rights reserved.
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-palette"></i>
+                </div>
+                <h3 class="feature-title">AI-Powered Design</h3>
+                <p class="feature-description">Transform your creative process with intelligent design assistance and automated workflows.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-magic"></i>
+                </div>
+                <h3 class="feature-title">Smart Automation</h3>
+                <p class="feature-description">Streamline repetitive tasks and focus on what matters most - your creative vision.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3 class="feature-title">Team Collaboration</h3>
+                <p class="feature-description">Built for modern design teams with real-time collaboration and version control.</p>
+            </div>
         </div>
+        </div>
+
+        <div class="footer">
+            &copy; 2025 BLACK HOLE AI. All rights reserved.
         </div>
        
     </div>
 
     <script>
-        // Create AI particles
-        const particlesContainer = document.getElementById('particles');
-        const particleCount = 30;
-        for (let i = 0; i < particleCount; i++) {
-            const particle = document.createElement('div');
-            particle.classList.add('particle');
-            const size = Math.random() * 4 + 2;
-            particle.style.width = `${size}px`;
-            particle.style.height = `${size}px`;
-            const angle = Math.random() * Math.PI * 2;
-            const distance = Math.random() * 120 + 60;
-            const x = 160 + Math.cos(angle) * distance;
-            const y = 160 + Math.sin(angle) * distance;
-            particle.style.left = `${x}px`;
-            particle.style.top = `${y}px`;
-            const duration = Math.random() * 5 + 3;
-            const delay = Math.random() * 2;
-            particle.style.animation = `
-                pulse ${duration}s infinite ${delay}s,
-                float ${duration * 2}s infinite ${delay}s`;
-            particlesContainer.appendChild(particle);
-        }
-        // Remove custom JS form handler for Formspree
+        // Add smooth animations on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in');
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.feature-card, .newsletter-card').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Enhanced form submission with better UX
+        const form = document.getElementById('emailForm');
+        const button = form.querySelector('button[type="submit"]');
+        const originalButtonText = button.innerHTML;
+
+        form.addEventListener('submit', function(e) {
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Joining...';
+            button.disabled = true;
+            
+            // Reset button after 3 seconds (Formspree will redirect)
+            setTimeout(() => {
+                button.innerHTML = originalButtonText;
+                button.disabled = false;
+            }, 3000);
+        });
     </script>
 </body>
 </html>
