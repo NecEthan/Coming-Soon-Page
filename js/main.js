@@ -137,61 +137,140 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Video autoplay handling for mobile devices
-const videoBackground = document.querySelector('.video-background');
-if (videoBackground) {
-    // Ensure video is muted and set to autoplay
-    videoBackground.muted = true;
-    videoBackground.setAttribute('playsinline', '');
-    videoBackground.setAttribute('webkit-playsinline', '');
+// Detect Safari browser
+function isSafari() {
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isSafariUA = /safari/.test(userAgent) && !/chrome/.test(userAgent) && !/chromium/.test(userAgent);
+    const isSafariVendor = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    const isSafariVersion = /Version\/[\d.]+.*Safari/.test(navigator.userAgent);
     
-    // Try to play the video programmatically
-    const playVideo = async () => {
-        try {
-            await videoBackground.play();
-            // If play succeeds, hide any controls
-            videoBackground.controls = false;
-        } catch (error) {
-            // If autoplay fails (mobile restriction), try again on user interaction
-            console.log('Autoplay prevented, will play on user interaction');
-            
-            // Add a one-time click handler to start video on first user interaction
-            const startVideoOnInteraction = () => {
-                videoBackground.play().catch(e => console.log('Video play failed:', e));
-                // Remove listeners after first interaction
-                document.removeEventListener('touchstart', startVideoOnInteraction);
-                document.removeEventListener('click', startVideoOnInteraction);
-            };
-            
-            document.addEventListener('touchstart', startVideoOnInteraction, { once: true });
-            document.addEventListener('click', startVideoOnInteraction, { once: true });
+    // Check for Safari on iOS
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    
+    // Check for Safari on macOS
+    const isMacSafari = navigator.vendor && navigator.vendor.indexOf('Apple') > -1 &&
+                       navigator.userAgent && !navigator.userAgent.match('CriOS') &&
+                       !navigator.userAgent.match('FxiOS');
+    
+    return isSafariUA || isSafariVendor || isSafariVersion || isIOS || isMacSafari;
+}
+
+// Video handling - Use bg.png for Safari, animated video for Chrome and other browsers
+const videoBackground = document.querySelector('.video-background');
+const videoBackgroundImage = document.getElementById('video-background-image');
+
+if (videoBackground && videoBackgroundImage) {
+    if (isSafari()) {
+        // Safari detected - hide video and show bg.png image instead
+        videoBackground.style.display = 'none';
+        videoBackgroundImage.src = 'bg.png';
+        videoBackgroundImage.style.display = 'block';
+        
+    } else {
+        // Chrome and other browsers - use animated video
+        videoBackgroundImage.style.display = 'none';
+        
+        // Ensure video is muted and set to autoplay
+        videoBackground.muted = true;
+        videoBackground.setAttribute('playsinline', '');
+        videoBackground.setAttribute('webkit-playsinline', '');
+        
+        // Try to play the video programmatically
+        const playVideo = async () => {
+            try {
+                await videoBackground.play();
+                // If play succeeds, hide any controls
+                videoBackground.controls = false;
+            } catch (error) {
+                // If autoplay fails (mobile restriction), try again on user interaction
+                console.log('Autoplay prevented, will play on user interaction');
+                
+                // Add a one-time click handler to start video on first user interaction
+                const startVideoOnInteraction = () => {
+                    videoBackground.play().catch(e => console.log('Video play failed:', e));
+                    // Remove listeners after first interaction
+                    document.removeEventListener('touchstart', startVideoOnInteraction);
+                    document.removeEventListener('click', startVideoOnInteraction);
+                };
+                
+                document.addEventListener('touchstart', startVideoOnInteraction, { once: true });
+                document.addEventListener('click', startVideoOnInteraction, { once: true });
+            }
+        };
+        
+        // Try to play when video is loaded
+        if (videoBackground.readyState >= 2) {
+            playVideo();
+        } else {
+            videoBackground.addEventListener('loadeddata', playVideo, { once: true });
         }
+        
+        // Also try on page load
+        if (document.readyState === 'complete') {
+            playVideo();
+        } else {
+            window.addEventListener('load', playVideo);
+        }
+        
+        // Ensure video stays playing and looped
+        videoBackground.addEventListener('pause', () => {
+            if (!videoBackground.ended) {
+                videoBackground.play().catch(e => console.log('Video resume failed:', e));
+            }
+        });
+        
+        videoBackground.addEventListener('ended', () => {
+            videoBackground.currentTime = 0;
+            videoBackground.play().catch(e => console.log('Video loop failed:', e));
+        });
+    }
+}
+
+// Animated stats counter for about page
+const animateStats = () => {
+    const statNumbers = document.querySelectorAll('.stat-number');
+    
+    const animateValue = (element, start, end, duration) => {
+        let startTimestamp = null;
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+            const current = Math.floor(easeOutQuart * (end - start) + start);
+            element.textContent = current;
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            } else {
+                element.textContent = end;
+            }
+        };
+        window.requestAnimationFrame(step);
     };
     
-    // Try to play when video is loaded
-    if (videoBackground.readyState >= 2) {
-        playVideo();
-    } else {
-        videoBackground.addEventListener('loadeddata', playVideo, { once: true });
-    }
+    const observerOptions = {
+        threshold: 0.5,
+        rootMargin: '0px'
+    };
     
-    // Also try on page load
-    if (document.readyState === 'complete') {
-        playVideo();
-    } else {
-        window.addEventListener('load', playVideo);
-    }
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const target = parseInt(entry.target.getAttribute('data-target'));
+                animateValue(entry.target, 0, target, 2000);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
     
-    // Ensure video stays playing and looped
-    videoBackground.addEventListener('pause', () => {
-        if (!videoBackground.ended) {
-            videoBackground.play().catch(e => console.log('Video resume failed:', e));
-        }
+    statNumbers.forEach(stat => {
+        observer.observe(stat);
     });
-    
-    videoBackground.addEventListener('ended', () => {
-        videoBackground.currentTime = 0;
-        videoBackground.play().catch(e => console.log('Video loop failed:', e));
-    });
+};
+
+// Initialize stats animation when page loads
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', animateStats);
+} else {
+    animateStats();
 }
 
