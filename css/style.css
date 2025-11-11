@@ -46,10 +46,29 @@ nav.scrolled {
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     gap: 3rem;
     position: relative;
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+    z-index: 1001;
+}
+
+.nav-logo:hover {
+    transform: scale(1.05);
+}
+
+.nav-logo img {
+    height: 140px;
+    width: auto;
+    object-fit: contain;
+    filter: brightness(0) invert(1) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2));
 }
 
 .logo {
@@ -222,6 +241,51 @@ nav.scrolled {
     padding: 2rem;
     max-width: 800px;
     animation: fadeInUp 1s ease;
+}
+
+.hero-rating {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.hero-stars {
+    display: flex;
+    gap: 0.3rem;
+    align-items: center;
+}
+
+.hero-stars .star {
+    font-size: 1.5rem;
+    line-height: 1;
+    color: #d1d5db;
+}
+
+.hero-stars .star.filled {
+    color: #fbbf24;
+    filter: drop-shadow(0 2px 4px rgba(251, 191, 36, 0.5));
+}
+
+.hero-rating-number {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    line-height: 1;
+}
+
+.hero-rating-count {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
 }
 
 .hero-content h1 {
@@ -511,6 +575,309 @@ nav.scrolled {
     font-size: 1rem;
     color: var(--text-dark);
     line-height: 1.7;
+}
+
+/* Trust Badges Section */
+.trust-badges-section {
+    padding: 6rem 0;
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+    position: relative;
+}
+
+.trust-badges-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.trust-badge-item {
+    text-align: center;
+    padding: 2.5rem 2rem;
+    background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+    border-radius: 15px;
+    border: 1px solid rgba(99, 102, 241, 0.1);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.trust-badge-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.15);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+.trust-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--accent-color), #8b5cf6);
+    color: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 auto 1.5rem;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+}
+
+.trust-badge-item h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--secondary-color);
+}
+
+.trust-badge-item p {
+    font-size: 1rem;
+    color: var(--text-dark);
+    margin: 0;
+}
+
+/* 5-Star Reviews Section */
+.reviews-section {
+    padding: 8rem 0;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    position: relative;
+}
+
+.reviews-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.overall-rating {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.stars-display {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.stars-display .star {
+    font-size: 2rem;
+    color: #fbbf24;
+    line-height: 1;
+}
+
+.rating-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.rating-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+    line-height: 1;
+}
+
+.rating-count {
+    font-size: 1rem;
+    color: var(--text-dark);
+}
+
+.reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2.5rem;
+    margin-top: 3rem;
+}
+
+.review-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+    padding: 2.5rem;
+    border-radius: 20px;
+    border: 1px solid rgba(99, 102, 241, 0.1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+}
+
+.review-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-color), #8b5cf6, var(--accent-color));
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.review-card:hover::before {
+    transform: scaleX(1);
+}
+
+.review-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 50px rgba(99, 102, 241, 0.15);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+}
+
+.reviewer-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+}
+
+.reviewer-avatar {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--accent-color), #8b5cf6);
+    color: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+}
+
+.reviewer-details {
+    flex: 1;
+}
+
+.reviewer-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--secondary-color);
+    margin-bottom: 0.25rem;
+}
+
+.reviewer-company {
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    opacity: 0.8;
+}
+
+.review-stars {
+    display: flex;
+    gap: 0.15rem;
+    flex-shrink: 0;
+}
+
+.review-stars .star {
+    font-size: 1.2rem;
+    color: #d1d5db;
+    line-height: 1;
+}
+
+.review-stars .star.filled {
+    color: #fbbf24;
+}
+
+.review-text {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+    font-style: italic;
+}
+
+.review-date {
+    font-size: 0.85rem;
+    color: var(--text-dark);
+    opacity: 0.6;
+}
+
+/* Certifications Section */
+.certifications-section {
+    padding: 8rem 0;
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+    position: relative;
+}
+
+.certifications-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2.5rem;
+    margin-top: 3rem;
+}
+
+.cert-item {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+    border-radius: 20px;
+    border: 1px solid rgba(99, 102, 241, 0.1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+}
+
+.cert-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-color), #8b5cf6, var(--accent-color));
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.cert-item:hover::before {
+    transform: scaleX(1);
+}
+
+.cert-item:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 50px rgba(99, 102, 241, 0.2);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+.cert-icon {
+    width: 56px;
+    height: 56px;
+    color: var(--accent-color);
+    stroke-width: 2;
+    margin: 0 auto 1.5rem;
+    display: block;
+    filter: drop-shadow(0 4px 8px rgba(99, 102, 241, 0.2));
+    transition: transform 0.3s ease;
+}
+
+.cert-item:hover .cert-icon {
+    transform: scale(1.15) rotate(5deg);
+}
+
+.cert-item h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--secondary-color);
+}
+
+.cert-item p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-dark);
+    margin: 0;
 }
 
 /* Testimonials Section */
@@ -2187,9 +2554,18 @@ footer p {
 
 @media (max-width: 768px) {
     .nav-container {
-        flex-wrap: wrap;
-        justify-content: center;
+        flex-wrap: nowrap;
+        justify-content: space-between;
         gap: 1rem;
+    }
+    
+    .nav-logo {
+        display: none;
+    }
+    
+    .nav-container {
+        padding: 0.5rem 1rem;
+        justify-content: center;
     }
 
     .nav-links {
@@ -2213,7 +2589,60 @@ footer p {
 
     .hero-content {
         padding: 1rem;
-        max-width: 90%;
+        max-width: 95%;
+    }
+    
+    .hero-content h1 {
+        font-size: clamp(1.75rem, 6vw, 2.5rem);
+        margin-bottom: 1rem;
+    }
+    
+    .hero-content p {
+        font-size: clamp(0.95rem, 3vw, 1.1rem);
+        margin-bottom: 1.5rem;
+    }
+    
+    .cta-button {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 1rem;
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+    }
+    
+    .phone-link {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        text-align: center;
+        padding: 0.9rem 1.5rem;
+        font-size: 0.95rem;
+    }
+    
+    .hero-rating {
+        padding: 0.75rem 1.25rem;
+        margin-top: 1.5rem;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .hero-stars {
+        gap: 0.2rem;
+    }
+    
+    .hero-stars .star {
+        font-size: 1.1rem;
+    }
+    
+    .hero-rating-number {
+        font-size: 1.3rem;
+    }
+    
+    .hero-rating-count {
+        font-size: 0.75rem;
+        text-align: center;
     }
 
     .home-hero {
@@ -2274,10 +2703,84 @@ footer p {
         grid-template-columns: 1fr;
         gap: 2rem;
     }
+    
+    .trust-badges-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .trust-badge-item {
+        padding: 1.5rem 1rem;
+    }
+    
+    .trust-badge-item h3 {
+        font-size: 1.1rem;
+    }
+    
+    .trust-badge-item p {
+        font-size: 0.85rem;
+    }
+    
+    .reviews-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .certifications-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .reviews-header {
+        margin-bottom: 2.5rem;
+    }
+    
+    .overall-rating {
+        margin-top: 1.5rem;
+        gap: 0.75rem;
+    }
+    
+    .stars-display {
+        font-size: 1.8rem;
+    }
+    
+    .rating-number {
+        font-size: 2.5rem;
+    }
+    
+    .rating-count {
+        font-size: 0.9rem;
+    }
+    
+    .review-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .review-stars {
+        align-self: flex-start;
+    }
+    
+    .reviewer-avatar {
+        width: 45px;
+        height: 45px;
+        font-size: 1rem;
+    }
 
     .steps-container {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 2rem;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .step-item {
+        padding: 1.5rem;
+    }
+    
+    .step-number {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
     }
 
     .contact-container {
@@ -2309,11 +2812,66 @@ footer p {
 
 @media (max-width: 480px) {
     nav {
-        padding: 1rem 1.5rem;
+        padding: 0.75rem 1rem;
+    }
+    
+    .nav-logo img {
+        height: 60px;
+    }
+    
+    .nav-links {
+        gap: 0.15rem;
+        padding: 0.4rem 0.5rem;
+    }
+    
+    .nav-links a {
+        padding: 0.4rem 0.75rem;
+        font-size: 0.8rem;
     }
 
     .logo {
         font-size: 1.2rem;
+    }
+    
+    .hero-content {
+        padding: 0.75rem;
+    }
+    
+    .hero-content h1 {
+        font-size: 1.5rem;
+        line-height: 1.3;
+    }
+    
+    .hero-content p {
+        font-size: 0.9rem;
+    }
+    
+    .cta-button {
+        padding: 0.9rem 1.25rem;
+        font-size: 0.95rem;
+    }
+    
+    .phone-link {
+        padding: 0.85rem 1.25rem;
+        font-size: 0.9rem;
+    }
+    
+    .hero-rating {
+        padding: 0.6rem 1rem;
+        gap: 0.5rem;
+        margin-top: 1.25rem;
+    }
+    
+    .hero-stars .star {
+        font-size: 1rem;
+    }
+    
+    .hero-rating-number {
+        font-size: 1.2rem;
+    }
+    
+    .hero-rating-count {
+        font-size: 0.7rem;
     }
 
     .contact-form,
@@ -2325,21 +2883,90 @@ footer p {
     .how-it-works-section,
     .testimonials-section,
     .pricing-section,
-    .final-cta-section {
+    .final-cta-section,
+    .trust-badges-section,
+    .reviews-section,
+    .certifications-section {
         padding: 3rem 0;
+    }
+    
+    .container {
+        padding: 0 1rem;
     }
 
     .section-heading {
-        font-size: 1.75rem;
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
     }
 
     .feature-card h3,
     .step-item h3 {
-        font-size: 1.25rem;
+        font-size: 1.1rem;
+    }
+    
+    .feature-card,
+    .testimonial-card,
+    .step-item {
+        padding: 1.5rem 1rem;
+    }
+    
+    .trust-badges-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .trust-badge-item {
+        padding: 1.25rem 1rem;
+    }
+    
+    .cert-item {
+        padding: 1.5rem 1rem;
+    }
+    
+    .review-card {
+        padding: 1.5rem 1rem;
+    }
+    
+    .reviews-header {
+        margin-bottom: 2rem;
+    }
+    
+    .overall-rating {
+        margin-top: 1.25rem;
+        gap: 0.6rem;
+    }
+    
+    .stars-display {
+        font-size: 1.5rem;
+    }
+    
+    .rating-number {
+        font-size: 2rem;
+    }
+    
+    .rating-count {
+        font-size: 0.85rem;
+    }
+    
+    .reviewer-avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 0.9rem;
+    }
+    
+    .review-text {
+        font-size: 0.9rem;
+        line-height: 1.6;
     }
 
     .pricing-description {
-        font-size: 1.1rem;
+        font-size: 1rem;
+    }
+    
+    .step-number {
+        width: 45px;
+        height: 45px;
+        font-size: 1.3rem;
     }
 }
 
