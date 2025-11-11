@@ -137,3 +137,61 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
+// Video autoplay handling for mobile devices
+const videoBackground = document.querySelector('.video-background');
+if (videoBackground) {
+    // Ensure video is muted and set to autoplay
+    videoBackground.muted = true;
+    videoBackground.setAttribute('playsinline', '');
+    videoBackground.setAttribute('webkit-playsinline', '');
+    
+    // Try to play the video programmatically
+    const playVideo = async () => {
+        try {
+            await videoBackground.play();
+            // If play succeeds, hide any controls
+            videoBackground.controls = false;
+        } catch (error) {
+            // If autoplay fails (mobile restriction), try again on user interaction
+            console.log('Autoplay prevented, will play on user interaction');
+            
+            // Add a one-time click handler to start video on first user interaction
+            const startVideoOnInteraction = () => {
+                videoBackground.play().catch(e => console.log('Video play failed:', e));
+                // Remove listeners after first interaction
+                document.removeEventListener('touchstart', startVideoOnInteraction);
+                document.removeEventListener('click', startVideoOnInteraction);
+            };
+            
+            document.addEventListener('touchstart', startVideoOnInteraction, { once: true });
+            document.addEventListener('click', startVideoOnInteraction, { once: true });
+        }
+    };
+    
+    // Try to play when video is loaded
+    if (videoBackground.readyState >= 2) {
+        playVideo();
+    } else {
+        videoBackground.addEventListener('loadeddata', playVideo, { once: true });
+    }
+    
+    // Also try on page load
+    if (document.readyState === 'complete') {
+        playVideo();
+    } else {
+        window.addEventListener('load', playVideo);
+    }
+    
+    // Ensure video stays playing and looped
+    videoBackground.addEventListener('pause', () => {
+        if (!videoBackground.ended) {
+            videoBackground.play().catch(e => console.log('Video resume failed:', e));
+        }
+    });
+    
+    videoBackground.addEventListener('ended', () => {
+        videoBackground.currentTime = 0;
+        videoBackground.play().catch(e => console.log('Video loop failed:', e));
+    });
+}
+
