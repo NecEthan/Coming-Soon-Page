@@ -3,645 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Design Copilot | Coming Soon</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-primary: #0d1117;
-            --bg-secondary: #161b22;
-            --bg-tertiary: #21262d;
-            --border-subtle: #30363d;
-            --border-muted: #21262d;
-            --text-primary: #f0f6fc;
-            --text-secondary: #8b949e;
-            --text-muted: #656d76;
-            --accent-primary: #238636;
-            --accent-secondary: #7c3aed;
-            --accent-tertiary: #0969da;
-            --surface-overlay: rgba(13, 17, 23, 0.8);
-            --shadow-lg: 0 16px 32px rgba(1, 4, 9, 0.85);
-            --shadow-xl: 0 25px 50px rgba(1, 4, 9, 0.85);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            overflow-x: hidden;
-            position: relative;
-            line-height: 1.6;
-        }
-        
-        .grid-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(var(--border-subtle) 1px, transparent 1px),
-                linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px);
-            background-size: 48px 48px;
-            z-index: -2;
-            opacity: 0.3;
-        }
-        
-        .gradient-orb {
-            position: fixed;
-            top: 20%;
-            right: 10%;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, transparent 70%);
-            border-radius: 50%;
-            z-index: -1;
-            animation: float 6s infinite ease-in-out;
-        }
-        
-        .gradient-orb-2 {
-            position: fixed;
-            bottom: 20%;
-            left: 10%;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(35, 134, 54, 0.12) 0%, transparent 70%);
-            border-radius: 50%;
-            z-index: -1;
-            animation: float 8s infinite ease-in-out reverse;
-        }
-        
-        .container {
-            max-width: 1200px;
-            width: 90%;
-            padding: 3rem 2rem;
-            text-align: center;
-            z-index: 1;
-        }
-        
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-subtle);
-            color: var(--text-secondary);
-            padding: 0.75rem 1.5rem;
-            border-radius: 50px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            margin-bottom: 3rem;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-        
-        .status-badge:hover {
-            border-color: var(--accent-primary);
-            color: var(--text-primary);
-        }
-        
-        .status-badge i {
-            margin-right: 0.75rem;
-            color: var(--accent-primary);
-        }
-        
-        .hero-title {
-            font-size: clamp(2.5rem, 8vw, 6rem);
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            line-height: 2.1;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        .hero-subtitle {
-            font-size: clamp(1.125rem, 3vw, 1.5rem);
-            color: var(--text-secondary);
-            margin-bottom: 3rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            font-weight: 400;
-        }
-        
-        .ai-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: 3rem;
-            margin: 3rem 0;
-        }
-        
-        .black-hole {
-            position: relative;
-            width: 320px;
-            height: 320px;
-            flex-shrink: 0;
-        }
-        
-        .black-hole-core {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 130px;
-            height: 130px;
-            background: radial-gradient(circle, #000 0%, #000 40%, #220033 100%);
-            border-radius: 50%;
-            box-shadow: 0 0 60px rgba(100, 80, 255, 0.8);
-        }
-        
-        .accretion-disk {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotateX(75deg);
-            width: 300px;
-            height: 90px;
-            border-radius: 50%;
-            background: linear-gradient(90deg, 
-                rgba(0,0,0,0) 0%, 
-                rgba(100, 80, 255, 0.8) 20%, 
-                rgba(160, 100, 255, 0.9) 50%, 
-                rgba(100, 80, 255, 0.8) 80%, 
-                rgba(0,0,0,0) 100%);
-            animation: rotate 20s infinite linear;
-        }
-        
-        .ai-particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        
-        .particle {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            background: linear-gradient(45deg, #5d9afe, #00c6ff);
-            border-radius: 50%;
-            opacity: 0;
-        }
-        
-        @keyframes rotate {
-            0% { transform: translate(-50%, -50%) rotateX(75deg) rotateZ(0deg); }
-            100% { transform: translate(-50%, -50%) rotateX(75deg) rotateZ(360deg); }
-        }
-        
-        .ai-features {
-            text-align: left;
-            max-width: 400px;
-        }
-        
-        .ai-features h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            color: #88d3ce;
-            display: flex;
-            align-items: center;
-        }
-        
-        .ai-features h3 i {
-            margin-right: 0.8rem;
-            color: #6e45e2;
-        }
-        
-        .feature {
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: flex-start;
-        }
-        
-        .feature i {
-            color: #6e45e2;
-            font-size: 1.2rem;
-            margin-right: 1rem;
-            margin-top: 0.3rem;
-        }
-        
-        .feature div {
-            flex: 1;
-        }
-        
-        .feature h4 {
-            color: #a594ff;
-            margin-bottom: 0.3rem;
-            font-size: 1.2rem;
-        }
-        
-        .newsletter-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-subtle);
-            border-radius: 16px;
-            padding: 3rem;
-            max-width: 600px;
-            margin: 4rem auto 2rem;
-            box-shadow: var(--shadow-lg);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-        
-        .newsletter-card:hover {
-            border-color: var(--accent-primary);
-            box-shadow: var(--shadow-xl);
-        }
-        
-        .newsletter-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-            color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .newsletter-title i {
-            margin-right: 0.75rem;
-            color: var(--accent-primary);
-        }
-        
-        .newsletter-description {
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            line-height: 1.6;
-        }
-        
-        .form-container {
-            position: relative;
-        }
-        
-        .form-group {
-            display: flex;
-            gap: 0;
-            margin-bottom: 1rem;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid var(--border-subtle);
-            transition: border-color 0.3s ease;
-        }
-        
-        .form-group:focus-within {
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 0 3px rgba(35, 134, 54, 0.1);
-        }
-        
-        .form-group input {
-            flex: 1;
-            padding: 1rem 1.5rem;
-            border: none;
-            background: var(--bg-tertiary);
-            color: var(--text-primary);
-            font-size: 1rem;
-            outline: none;
-            font-family: inherit;
-        }
-        
-        .form-group input::placeholder {
-            color: var(--text-muted);
-        }
-        
-        .form-group button {
-            padding: 1rem 2rem;
-            background: var(--accent-primary);
-            color: white;
-            border: none;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-            font-family: inherit;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .form-group button:hover {
-            background: #2ea043;
-            transform: translateY(-1px);
-        }
-        
-        .form-group button:active {
-            transform: translateY(0);
-        }
-        
-        .privacy-note {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            margin-top: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-        
-        .social-links {
-            margin-top: 3rem;
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-        }
-        
-        .social-links a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: rgba(20, 20, 40, 0.6);
-            color: #a594ff;
-            font-size: 1.3rem;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(100, 80, 255, 0.3);
-        }
-        
-        .social-links a:hover {
-            background: linear-gradient(90deg, #6e45e2, #88d3ce);
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(110, 69, 226, 0.4);
-        }
-        
-        .footer {
-            margin-top: 4rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--border-subtle);
-            color: var(--text-muted);
-            font-size: 0.875rem;
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin: 4rem 0;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .feature-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            padding: 2rem;
-            text-align: left;
-            transition: all 0.3s ease;
-        }
-        
-        .feature-card:hover {
-            border-color: var(--accent-primary);
-            transform: translateY(-4px);
-        }
-        
-        .feature-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            background: rgba(35, 134, 54, 0.1);
-            color: var(--accent-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
-        }
-        
-        .feature-title {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-        }
-        
-        .feature-description {
-            color: var(--text-secondary);
-            font-size: 0.925rem;
-            line-height: 1.5;
-        }
-        
-        /* Animations */
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .animate-fade-in {
-            animation: fadeInUp 0.8s ease-out forwards;
-        }
-        
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .container {
-                padding: 2rem 1rem;
-            }
-            
-            .newsletter-card {
-                padding: 2rem;
-                margin: 3rem auto 2rem;
-            }
-            
-            .form-group {
-                flex-direction: column;
-                border-radius: 12px;
-            }
-            
-            .form-group input {
-                border-radius: 12px 12px 0 0;
-                border-bottom: none;
-            }
-            
-            .form-group button {
-                border-radius: 0 0 12px 12px;
-                border-top: 1px solid var(--border-subtle);
-            }
-            
-            .features-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-                margin: 2rem 0;
-            }
-            
-            .feature-card {
-                padding: 1.5rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .newsletter-card {
-                padding: 1.5rem;
-            }
-            
-            .status-badge {
-                padding: 0.5rem 1rem;
-                font-size: 0.8rem;
-            }
-        }
-    </style>
+    <meta name="description" content="Orbis Flow Ai - Next-Level Websites Powered by AI, Completely Free">
+    <title>Orbis Flow Ai - Home</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="grid-background"></div>
-    <div class="gradient-orb"></div>
-    <div class="gradient-orb-2"></div>
-    
-    <div class="container">
-        <div class="status-badge">
-            <i class="fas fa-code"></i>
-            <span>LAUNCHING SOON</span>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
         </div>
-        
-        <h1 class="hero-title">AI Design Copilot</h1>
-        <p class="hero-subtitle">The intelligent Figma plugin that handles feedback, improves your designs, and helps you become a better designer in the moment</p>
+    </nav>
 
-        <div class="newsletter-card">
-            <h3 class="newsletter-title">
-                <i class="fas fa-envelope"></i> 
-                Get Early Access
-            </h3>
-            <p class="newsletter-description">
-                Get early access to the AI Design Copilot for Figma. Transform how you handle feedback, 
-                get real-time design critique, and make better design decisions.
-            </p>
-            
-            <form action="https://formspree.io/f/xgvljowa" method="POST" id="emailForm">
-                <div class="form-container">
-                    <div class="form-group">
-                        <input type="email" name="email" id="email" placeholder="Enter your email address" required>
-                        <button type="submit">
-                            Join Waitlist
-                            <i class="fas fa-arrow-right"></i>
-                        </button>
+    <!-- Hero Section with Video Background -->
+    <section class="home-hero">
+        <video class="video-background" autoplay muted loop playsinline>
+            <source src="https://aicm.store/static/media/Headervideo.f31b35a8331a4491b12b.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="video-overlay"></div>
+        <div class="hero-content">
+            <h1>Next-Level Websites Powered by AI—Completely Free</h1>
+            <p>We build, host, and maintain stunning websites for your business—fueled by AI, at zero cost.</p>
+            <a href="contact.html" class="cta-button">Get Your Free AI-Powered Website</a>
+            <a href="tel:+447572012255" class="phone-link">📞 Call Now: 07572 012255</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <h2 class="section-heading">Why Businesses Choose Us</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">✨</div>
+                    <h3>AI-Enhanced Designs</h3>
+                    <p>Modern websites optimized for conversions.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Free Development & Hosting</h3>
+                    <p>No hidden fees, ever.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Fully Managed</h3>
+                    <p>Updates, support, and security handled for you.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3>SEO & Performance Ready</h3>
+                    <p>AI-driven content and optimization.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works-section">
+        <div class="container">
+            <h2 class="section-heading">Launch Your Website in 4 Easy Steps</h2>
+            <div class="steps-container">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <h3>Tell Us About Your Business</h3>
+                    <p>Share your goals, branding, and vision with us.</p>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <h3>We Build & Optimize</h3>
+                    <p>Custom AI-enhanced website delivered fast with cutting-edge design.</p>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <h3>Go Live & Grow</h3>
+                    <p>We host, maintain, and update your site automatically.</p>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <h3>Monthly Social Media Posts</h3>
+                    <p>We create and deliver AI-generated social media content every month to keep your audience engaged.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+        <div class="container">
+            <h2 class="section-heading">Businesses Love Their Free AI Websites</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"I couldn't believe it was free. My site looks professional and works flawlessly."</p>
+                    <p class="testimonial-author">– Sarah Johnson, CEO</p>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"The AI features saved us hours of work and boosted traffic instantly."</p>
+                    <p class="testimonial-author">– Michael Chen, Founder</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- No Excuse Section -->
+    <section class="no-excuse-section">
+        <div class="container">
+            <div class="no-excuse-content">
+                <h2 class="no-excuse-heading">The AI Revolution Is Here—No Excuse to Fall Behind</h2>
+                <p class="no-excuse-subheading">Your competition is already using AI. Don't let them get ahead while you're still thinking about it.</p>
+                
+                <div class="no-excuse-grid">
+                    <div class="no-excuse-item">
+                        <div class="no-excuse-icon-wrapper">
+                            <svg class="no-excuse-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h3>Free Professional Website</h3>
+                        <p>Built, hosted, and maintained at zero cost</p>
+                    </div>
+                    <div class="no-excuse-item">
+                        <div class="no-excuse-icon-wrapper">
+                            <svg class="no-excuse-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M17 2H7C5.89543 2 5 2.89543 5 4V20C5 21.1046 5.89543 22 7 22H17C18.1046 22 19 21.1046 19 20V4C19 2.89543 18.1046 2 17 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 18H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h3>Free Social Media Posts</h3>
+                        <p>AI-generated content delivered every month</p>
+                    </div>
+                    <div class="no-excuse-item">
+                        <div class="no-excuse-icon-wrapper">
+                            <svg class="no-excuse-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h3>AI Automations</h3>
+                        <p>Streamline your business with intelligent automation</p>
                     </div>
                 </div>
-                <div class="privacy-note">
-                    <i class="fas fa-shield-alt"></i>
-                    We respect your privacy. Unsubscribe at any time.
-                </div>
-            </form>
-        </div>
 
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-comments"></i>
+                <div class="no-excuse-cta">
+                    <p class="no-excuse-cta-text">Everything you need to dominate your market—completely free.</p>
+                    <a href="contact.html" class="cta-button large">Get Started Now - It's Free!</a>
                 </div>
-                <h3 class="feature-title">Instant Feedback Response</h3>
-                <p class="feature-description">Highlight stakeholder comments, right-click, and get tailored, respectful responses with evidence-based fixes and alternatives.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-eye"></i>
-                </div>
-                <h3 class="feature-title">Real-Time Design Critique</h3>
-                <p class="feature-description">Get proactive feedback against product docs, customer problems, and key metrics like having a design coach inside Figma.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-search"></i>
-                </div>
-                <h3 class="feature-title">Knowledge at Your Fingertips</h3>
-                <p class="feature-description">Ask questions like "What fields are required for sign-up?" and get instant answers directly in Figma without digging through docs.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <h3 class="feature-title">Feedback Analytics</h3>
-                <p class="feature-description">Analyze feedback trends, surface recurring issues, and automatically turn comments into Jira/Linear tickets.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-shield-alt"></i>
-                </div>
-                <h3 class="feature-title">Privacy-First</h3>
-                <p class="feature-description">No raw design files are stored. Only secure, vectorized data is used to protect your designs and client confidentiality.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-rocket"></i>
-                </div>
-                <h3 class="feature-title">Reduce Revision Cycles</h3>
-                <p class="feature-description">Save time and help designers confidently back up their decisions while nudging toward stronger, customer-focused outcomes.</p>
             </div>
         </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing-section">
+        <div class="container">
+            <h2 class="section-heading">No Fees. No Catch.</h2>
+            <div class="pricing-content">
+                <p class="pricing-description">Everything is included for free: design, hosting, maintenance, updates.</p>
+                <p class="pricing-subtext">Start today with zero investment.</p>
+            </div>
         </div>
+    </section>
 
-        <div class="footer">
-            &copy; 2025 AI Design Copilot. All rights reserved.
+    <!-- Final CTA Section -->
+    <section class="final-cta-section">
+        <div class="container">
+            <h2 class="section-heading">Ready to Transform Your Online Presence?</h2>
+            <a href="contact.html" class="cta-button"><span>Claim Your Free AI-Powered Website</span></a>
         </div>
-       
-    </div>
+    </section>
 
-    <script>
-        // Add smooth animations on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Orbis Flow Ai. All rights reserved.</p>
+    </footer>
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate-fade-in');
-                }
-            });
-        }, observerOptions);
-
-        // Observe elements for animation
-        document.querySelectorAll('.feature-card, .newsletter-card').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Enhanced form submission with better UX
-        const form = document.getElementById('emailForm');
-        const button = form.querySelector('button[type="submit"]');
-        const originalButtonText = button.innerHTML;
-
-        form.addEventListener('submit', function(e) {
-            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Joining...';
-            button.disabled = true;
-            
-            // Reset button after 3 seconds (Formspree will redirect)
-            setTimeout(() => {
-                button.innerHTML = originalButtonText;
-                button.disabled = false;
-            }, 3000);
-        });
-    </script>
+    <script src="js/main.js"></script>
 </body>
 </html>
+

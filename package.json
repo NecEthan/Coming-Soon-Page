@@ -1,0 +1,19 @@
+{
+  "name": "orbis-flow-ai",
+  "version": "1.0.0",
+  "description": "Orbis Flow Ai - AI-powered website builder",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1"
+  }
+}
+

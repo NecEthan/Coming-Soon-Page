@@ -1,0 +1,12 @@
+{
+  "functions": {
+    "api/send-email.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "env": {
+    "RESEND_API": "@resend_api",
+    "RESEND_FROM_EMAIL": "@resend_from_email"
+  }
+}
+
